@@ -151,6 +151,39 @@ def parse_exercises(text):
                 question_part = before_gabarito
                 commentary_part = ""
 
+        # ==========================
+        # EDGE CASE FIXES
+        # ==========================
+
+        # 1️⃣ Detect "Questão correta/errada"
+        if not answer:
+            qc_match = re.search(r"Quest[aã]o\s+(correta|errada)", content_clean, re.IGNORECASE)
+            if qc_match:
+                word = qc_match.group(1).lower()
+                answer = "Correto" if "corret" in word else "Errado"
+
+                # Treat entire block as commentary except first line
+                lines = content_clean.split("\n")
+                if len(lines) > 1:
+                    question_part = lines[0].strip()
+                    commentary_part = "\n".join(lines[1:]).strip()
+
+        # 2️⃣ If commentary empty but answer exists → copy answer
+        if answer and not commentary_part.strip():
+            commentary_part = answer
+
+        # 3️⃣ Certo/Errado heuristic split
+        # If no alternatives and commentary empty but multiple sentences
+        if not commentary_part:
+            alt_exists = re.search(r"\n[A-E]\)", question_part)
+
+            if not alt_exists:
+                sentences = re.split(r"(?<=\.)\s+", question_part)
+                if len(sentences) > 1:
+                    question_part = sentences[0].strip()
+                    commentary_part = " ".join(sentences[1:]).strip()
+
+
         exercise = {
             "id": f"15-ort-{counter:03}",
             "chapter": CHAPTER,
