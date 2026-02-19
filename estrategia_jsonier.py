@@ -9,12 +9,8 @@ import json
 PDF_PATH = "aula15_short.pdf"
 OUTPUT_FILE = "aula15.json"
 
-DEBUG = True        # <-- change to False to export everything
+DEBUG = False        # <-- change to False to export everything
 DEBUG_LIMIT = 100    # number of exercises when DEBUG=True
-
-CHAPTER = "Ortografia"
-SUBCHAPTER = "Sons, Letras, Fonemas e Dígrafo"
-
 
 # ==============================
 # STEP 1 - Extract full text
@@ -186,8 +182,6 @@ def parse_exercises(text):
 
         exercise = {
             "id": f"15-ort-{counter:03}",
-            "chapter": CHAPTER,
-            "subchapter": SUBCHAPTER,
             "number": number,
             "meta": meta,
             "question": question_part,
@@ -245,8 +239,6 @@ def parse_exercises(text):
 
         exercise = {
             "id": f"15-ort-{counter:03}",
-            "chapter": CHAPTER,
-            "subchapter": SUBCHAPTER,
             "number": number,
             "meta": meta,
             "question": question,
@@ -295,8 +287,6 @@ def parse_exercises(text):
 
         exercise = {
             "id": f"15-ort-{counter:03}",
-            "chapter": CHAPTER,
-            "subchapter": SUBCHAPTER,
             "number": number,
             "meta": meta,
             "question": question,
